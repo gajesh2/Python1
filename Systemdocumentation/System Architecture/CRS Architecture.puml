@@ -1,0 +1,24 @@
+@startuml
+
+node "Customer Module" {
+    [Command line client]
+}
+
+node "Admin Module" {
+    [Command line client]
+}
+
+node "Application Server" {
+    [Rental System Application]
+}
+
+node "Database Server" {
+    [MySQL Database]
+}
+
+"Customer Module" --> "Application Server": Command line Requests
+"Admin Module" --> "Application Server": Command line Requests
+"Application Server" --> "Database Server": SQL Queries
+"Database Server" --> "Application Server": SQL Responses
+
+@enduml

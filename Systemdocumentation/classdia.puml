@@ -1,0 +1,50 @@
+@startuml
+
+class Database {
+    -conn
+    -cursor
+    +__init__(localhost, root, password, db)
+    +execute(query, params=None)
+    +fetchall()
+    +fetchone()
+}
+
+class Admin {
+    -db: Database
+    +__init__(db)
+    +add_car()
+    +delete_car()
+    +list_cars()
+}
+
+class Customer {
+    -db: Database
+    +__init__(db)
+    +add_customer()
+    +list_customers()
+    +view_customer_bookings()
+    +view_mybookings(custid)
+    +view_payments()
+    +view_cars()
+    +rent_car(custid)
+    +return_car(Is_Available, Rego)
+    +make_payment(booking_id, amount)
+}
+
+class RentalSystem {
+    -db: Database
+    -admin: Admin
+    -customer: Customer
+    +__init__()
+    +admin_menu()
+    +customer_menu()
+    +ExistingCustomer_menu(custid)
+    +login()
+}
+
+Database "1" -- "1" Admin : uses >
+Database "1" -- "1" Customer : uses >
+RentalSystem "1" -- "1" Admin : has >
+RentalSystem "1" -- "1" Customer : has >
+
+@enduml

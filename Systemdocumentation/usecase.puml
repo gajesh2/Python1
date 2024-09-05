@@ -1,0 +1,42 @@
+@startuml
+left to right direction
+
+actor Admin as A
+actor Customer as C
+
+rectangle "Car Rental System" {
+
+    usecase "Login" as UC1
+    usecase "Add Car" as UC2
+    usecase "Delete Car" as UC3
+    usecase "List Cars" as UC4
+    usecase "Add Customer" as UC5
+    usecase "List Customers" as UC6
+    usecase "View Customer Bookings" as UC7
+    usecase "View Payments" as UC8
+    usecase "View Car Availability" as UC9
+    usecase "Rent Car" as UC10
+    usecase "Make Payment" as UC11
+    usecase "Return Car" as UC12
+    usecase "View My Bookings" as UC13
+    usecase "Existing Customer Login" as UC14
+    usecase "Admin Login" as UC15
+
+    A --> UC15
+    A --> UC2
+    A --> UC3
+    A --> UC4
+    A --> UC6
+    A --> UC7
+    A --> UC8
+
+    C --> UC14
+    C --> UC5
+    C --> UC9
+    C --> UC10
+    C --> UC11
+    C --> UC12
+    C --> UC13
+}
+
+@enduml

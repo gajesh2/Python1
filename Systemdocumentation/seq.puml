@@ -1,0 +1,58 @@
+@startuml
+
+actor User
+User -> RentalSystem: login()
+RentalSystem -> Database: execute("SELECT * FROM admin WHERE username = ? AND password = ?")
+Database --> RentalSystem: admin credentials
+
+alt Admin Login
+    User -> RentalSystem: admin_menu()
+    loop Admin Operations
+        User -> RentalSystem: add_car() / delete_car() / list_cars() / etc.
+        RentalSystem -> Database: execute(query)
+        Database --> RentalSystem: result
+    end
+end
+
+alt Customer Login
+    User -> RentalSystem: customer_menu()
+    loop Customer Operations
+        User -> RentalSystem: add_customer()
+        User -> RentalSystem: ExistingCustomer_menu()
+        RentalSystem -> Database: execute(query)
+        Database --> RentalSystem: customer ID
+
+        alt Rent a Car
+            User -> RentalSystem: rent_car(custid)
+            RentalSystem -> Database: execute("SELECT * FROM Cars WHERE Rego = ?")
+            Database --> RentalSystem: car details
+
+            RentalSystem -> Database: execute("SELECT car_id FROM Cars WHERE Rego = ?")
+            Database --> RentalSystem: car_id
+
+            User -> RentalSystem: Confirm booking
+            RentalSystem -> Database: execute("INSERT INTO Bookings (customer_id, car_id, start_date, end_date)")
+            Database --> RentalSystem: booking confirmation
+
+            RentalSystem -> Database: execute("INSERT INTO Payments (booking_id, amount, payment_date)")
+            Database --> RentalSystem: payment confirmation
+        end
+
+        alt Return a Car
+            User -> RentalSystem: return_car()
+            RentalSystem -> Database: execute("UPDATE Cars SET available = ? WHERE Rego = ?")
+            Database --> RentalSystem: car status updated
+        end
+
+        alt View My Bookings
+            User -> RentalSystem: view_mybookings(custid)
+            RentalSystem -> Database: execute("SELECT * FROM Bookings WHERE customer_id = ?")
+            Database --> RentalSystem: bookings details
+        end
+    end
+end
+
+User -> RentalSystem: Logout
+RentalSystem -> User: Thank you!
+
+@enduml
